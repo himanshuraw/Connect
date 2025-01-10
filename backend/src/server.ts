@@ -5,6 +5,7 @@ import helmet from "helmet";
 
 import dotenv from "dotenv";
 import { connectMongoDB, connectPostgres } from "./config/db";
+import userRoutes from './routes/user.route';
 
 dotenv.config();
 
@@ -22,6 +23,8 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
+
+app.use('/api/users', userRoutes);
 
 // Database connections
 (async () => {
