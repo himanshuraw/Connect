@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import { Post } from "./Post";
 import { Comment } from "./Comment";
 import { Like } from "./Like";
+import { Follow } from "./Follow";
 
 @Entity('users')
 export class User {
@@ -25,6 +26,12 @@ export class User {
 
     @OneToMany(() => Like, (like) => like.user, { cascade: true })
     likes: Like[];
+
+    @OneToMany(() => Follow, (follow) => follow.follower)
+    following: Follow[];
+
+    @OneToMany(() => Follow, (follow) => follow.following)
+    followers: Follow[];
 
     @CreateDateColumn()
     createdAt: Date;
