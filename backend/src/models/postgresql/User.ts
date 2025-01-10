@@ -1,4 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
+import { Post } from "./Post";
+import { Comment } from "./Comment";
+import { Like } from "./Like";
 
 @Entity('users')
 export class User {
@@ -13,6 +16,15 @@ export class User {
 
     @Column()
     password: string;
+
+    @OneToMany(() => Post, (post) => post.author, { cascade: true })
+    posts: Post[];
+
+    @OneToMany(() => Comment, (comment) => comment.author, { cascade: true })
+    comments: Comment[];
+
+    @OneToMany(() => Like, (like) => like.user, { cascade: true })
+    likes: Like[];
 
     @CreateDateColumn()
     createdAt: Date;
