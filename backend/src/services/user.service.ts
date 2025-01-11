@@ -26,4 +26,22 @@ export class UserService {
         const result = await this.userRepository.delete(id);
         return result.affected! > 0;
     }
+
+    // static async findUserByEmailorUsername(emailOrUsername: string) {
+    //     return this.userRepository.findOne({
+    //         where: [{ email: emailOrUsername }, { username: emailOrUsername }],
+    //     });
+    // }
+
+    static async findUserByUsername(username: string) {
+        return this.userRepository.findOne({
+            where: { username: username },
+        })
+    }
+
+    static async findUserByEmail(email: string) {
+        return this.userRepository.findOne({
+            where: { email: email },
+        })
+    }
 }
