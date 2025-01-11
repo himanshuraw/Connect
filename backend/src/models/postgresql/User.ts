@@ -18,6 +18,9 @@ export class User {
     @Column()
     password: string;
 
+    @Column({ type: "text", nullable: true })
+    profilePictureUrl: string;
+
     @OneToMany(() => Post, (post) => post.author, { cascade: true })
     posts: Post[];
 

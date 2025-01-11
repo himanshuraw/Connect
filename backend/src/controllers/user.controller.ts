@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { UserService } from "../services/user.service";
 import bcrypt from "bcrypt";
+import { isBase64 } from "../utils/base64";
+import { hashPassword } from "../utils/bcrypt";
 
 export class UserController {
     static async getAllUsers(request: Request, response: Response) {
@@ -33,8 +35,7 @@ export class UserController {
         try {
             const userData = request.body;
 
-            const salt = parseInt(process.env.SALT || "10", 10);
-            userData.password = await bcrypt.hash(userData.password, salt);
+            userData.password = await hashPassword(userData.password);
 
             const user = await UserService.createUser(userData);
             response.status(201).json(user);
@@ -49,9 +50,7 @@ export class UserController {
             const updates = request.body;
 
             if (updates.password) {
-
-                const salt = parseInt(process.env.SALT || "10", 10);
-                updates.password = await bcrypt.hash(updates.password, salt);
+                updates.password = await hashPassword(updates.password);
             }
 
             const updatedUser = await UserService.updateUser(userId, updates);
@@ -81,6 +80,29 @@ export class UserController {
             response.status(204).send();
         } catch (error) {
             response.status(500).json({ message: (error as Error).message });
+        }
+    }
+
+    static async addProfilePicture(request: Request, response: Response) {
+        try {
+            const userId = parseInt(request.params.id);
+            const { profilePictureUrl } = request.body;
+
+            if (!profilePictureUrl) {
+                response.status(400).json({ message: " Profile picture URL is required" });
+                return;
+            }
+
+            const updatedUser = await UserService.updateUser(userId, { profilePictureUrl });
+
+            if (!updatedUser) {
+                response.status(404).json({ message: "User not found" });
+                return;
+            }
+
+            response.status(200).json({ message: "Profile picture updated succesfully" });
+        } catch (error) {
+            response.status(500).json({ message: "Internal server error" });
         }
     }
 }

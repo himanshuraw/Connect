@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { UserService } from "../services/user.service";
 import bcrypt from "bcrypt";
+import { hashPassword } from "../utils/bcrypt";
 
 export class AuthController {
     static async login(request: Request, response: Response) {
@@ -73,8 +74,7 @@ export class AuthController {
                 return
             }
 
-            const salt = parseInt(process.env.SALT || "10", 10);
-            const hashedPassword = await bcrypt.hash(password, salt);
+            const hashedPassword = await hashPassword(password);
 
             const user = await UserService.createUser({ email, username, password: hashedPassword });
 
