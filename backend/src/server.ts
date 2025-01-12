@@ -24,7 +24,7 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api', userRoutes);
+app.use('/users', userRoutes);
 
 // Database connections
 (async () => {
