@@ -100,4 +100,28 @@ export class UserController {
             response.status(500).json({ message: "Internal server error" });
         }
     }
+
+    static async togglePrivacy(request: Request, response: Response) {
+        try {
+            const userId = request.user?.userId;
+
+            if (!userId) {
+                response.status(401).json({ message: "Unauthorized" });
+                return;
+            }
+
+            const user = await UserService.getUserById(userId);
+
+            if (!user) {
+                response.status(404).json({ message: "User not found" });
+                return;
+            }
+
+            const updatedUser = await UserService.updateUser(userId, { isPrivate: !user.isPrivate });
+
+            response.status(200).json({ message: `Privacy updated to ${updatedUser.isPrivate ? "private" : "public"}` })
+        } catch (error) {
+            response.status(400).json({ message: (error as Error).message });
+        }
+    }
 }

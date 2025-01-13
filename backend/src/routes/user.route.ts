@@ -15,6 +15,8 @@ router.post('/', UserController.createUser);
 router.put('/:id', UserController.updateUser);
 router.delete('/:id', UserController.deleteUser);
 
+router.patch('/privacy', authenticate, UserController.togglePrivacy);
 router.use('/:id/profile-picture', authenticate, profilePictureRoute);
+
 
 export default router;
