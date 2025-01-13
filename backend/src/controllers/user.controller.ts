@@ -19,11 +19,6 @@ export class UserController {
             const userId = parseInt(request.params.id);
             const user = await UserService.getUserById(userId);
 
-            if (!user) {
-                response.status(404).json({ message: `User not found` });
-                return;
-            }
-
             response.status(200).json(user);
         } catch (error) {
             response.status(500).json({ message: (error as Error).message })

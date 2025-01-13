@@ -9,7 +9,13 @@ export class UserService {
     }
 
     static async getUserById(id: number) {
-        return this.userRepository.findOneBy({ id });
+        const user = await this.userRepository.findOneBy({ id });
+
+        if (!user) {
+            throw new Error(`user with ID ${id} not found`)
+        }
+        const { password, ...userDetails } = user;
+        return { ...userDetails };
     }
 
     static async createUser(userData: Partial<User>) {
