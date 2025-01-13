@@ -6,6 +6,7 @@ import helmet from "helmet";
 import dotenv from "dotenv";
 import { connectMongoDB, connectPostgres } from "./config/db";
 import userRoutes from './routes/user.route';
+import postRoutes from './routes/post.route';
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/users', userRoutes);
+app.use('/posts', postRoutes);
 
 // Database connections
 (async () => {
