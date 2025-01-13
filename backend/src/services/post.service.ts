@@ -15,12 +15,28 @@ export class PostService {
         });
     }
 
-    static async getPostByUser(id: number) {
-        return this.postRepository.find({
+    static async getPostById(id: number) {
+        return this.postRepository.findOne({
+            where: { id },
+            relations: ["author"]
+        });
+    }
+
+    static async getAllPostByUser(id: number) {
+        const posts = await this.postRepository.find({
             where: { author: { id } },
             relations: ["author", "comments", "likes"],
             order: { createdAt: "DESC" },
         });
+
+        return posts.map(post => {
+            const { author, ...postDetails } = post;
+            const { password, createdAt, updatedAt, ...authorDetails } = author;
+            return {
+                ...postDetails,
+                author: authorDetails
+            }
+        })
     }
 
     static async createPost(data: PostData) {
