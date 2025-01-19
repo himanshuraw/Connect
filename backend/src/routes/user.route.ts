@@ -1,8 +1,10 @@
 import { Router } from "express";
 import { UserController } from "../controllers/user.controller";
 import { AuthController } from "../controllers/auth.controller";
-import { FollowController } from "../controllers/follow.controller";
 import { authenticate } from "../middlewares/auth.middleware";
+
+import followRouter from "./follow.route"
+
 
 const router = Router();
 
@@ -15,11 +17,12 @@ router.post('/', UserController.createUser);
 router.put('/:id', UserController.updateUser);
 router.delete('/:id', UserController.deleteUser);
 
-router.patch('/:id/profile-picture', authenticate, UserController.addProfilePicture);
+router.patch('/profile-picture', authenticate, UserController.addProfilePicture);
 
 router.patch('/privacy', authenticate, UserController.togglePrivacy);
 
-router.post('/:id/follow', authenticate, FollowController.handleFollowAction);
+router.use('/follow', followRouter);
+
 
 
 

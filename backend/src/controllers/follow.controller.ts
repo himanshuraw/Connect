@@ -55,7 +55,41 @@ export class FollowController {
             const pendingRequests = await FollowService.getPendingRequests(userId);
             response.status(200).json(pendingRequests);
         } catch (error) {
-            response.send(500).json({ message: (error as Error).message });
+            response.status(500).json({ message: (error as Error).message });
+        }
+    }
+
+    static async getFollowers(request: Request, response: Response) {
+        try {
+            const userId = parseInt(request.params.userId);
+            console.log(userId)
+
+            if (isNaN(userId)) {
+                response.status(400).json({ message: "Invalid user ID" });
+                return;
+            }
+
+            const followers = await FollowService.getFollowers(userId);
+            response.status(200).json({ followers });
+        } catch (error) {
+            response.status(500).json({ message: (error as Error).message })
+        }
+    }
+
+    static async getFollowings(request: Request, response: Response) {
+        try {
+            const userId = parseInt(request.params.userId);
+            console.log(request.params)
+
+            if (isNaN(userId)) {
+                response.status(400).json({ message: "Invalid user ID" });
+                return;
+            }
+
+            const followings = await FollowService.getFollowing(userId);
+            response.status(200).json({ followings });
+        } catch (error) {
+            response.status(500).json({ message: (error as Error).message })
         }
     }
 }

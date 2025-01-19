@@ -4,7 +4,10 @@ import { FollowController } from "../controllers/follow.controller";
 
 const router = Router();
 
-router.get('/', authenticate, FollowController.getPendingRequests);
-router.post('/:requestId', authenticate, FollowController.processFollowRequest);
+router.get('/pending', authenticate, FollowController.getPendingRequests);
+router.get('/:userId/followers', FollowController.getFollowers);
+router.get('/:userId/followings', FollowController.getFollowings);
+router.post('/:id', authenticate, FollowController.handleFollowAction)
+router.post('/requests/:requestId', authenticate, FollowController.processFollowRequest);
 
 export default router;

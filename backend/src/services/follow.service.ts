@@ -22,7 +22,9 @@ export class FollowService {
         });
 
         if (existingFollow) {
-            const message = existingFollow.isAccepted ? "Unfollowed" : " Follow request canceled";
+            const message = existingFollow.isAccepted
+                ? "Unfollowed"
+                : " Follow request cancelled";
             await this.followRepository.delete(existingFollow.id);
             return { message };
         }
@@ -30,7 +32,7 @@ export class FollowService {
         const followRequest = this.followRepository.create({
             follower,
             following,
-            isAccepted: !follower.isPrivate,
+            isAccepted: !following.isPrivate,
         });
 
         await this.followRepository.save(followRequest);

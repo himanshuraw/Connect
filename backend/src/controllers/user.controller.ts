@@ -80,11 +80,16 @@ export class UserController {
 
     static async addProfilePicture(request: Request, response: Response) {
         try {
-            const userId = parseInt(request.params.id);
+            const userId = request.user?.userId;
             const { profilePictureUrl } = request.body;
 
             if (!profilePictureUrl) {
                 response.status(400).json({ message: " Profile picture URL is required" });
+                return;
+            }
+
+            if (!userId) {
+                response.status(401).json({ message: "Unauthorized" });
                 return;
             }
 
