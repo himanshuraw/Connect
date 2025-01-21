@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
-import { PostData } from "../types/PostData";
 import { PostService } from "../services/post.service";
+import { plainToInstance } from "class-transformer";
+import { PaginationDto } from "../dto/PaginationDto";
+import { validate } from "class-validator";
+import { PostDto } from "../dto/PostDto";
 
 export class PostController {
     static async createPost(request: Request, response: Response) {
@@ -12,8 +15,15 @@ export class PostController {
             return;
         }
 
+        const postData = plainToInstance(PostDto, { authorId: userId, imageUrl, caption, tags })
+        const errors = await validate(postData);
+
+        if (errors.length > 0) {
+            response.status(400).json({ message: 'Validation failed', errors });
+            return;
+        }
+
         try {
-            const postData: PostData = { authorId: userId, imageUrl, caption, tags };
             const newPost = await PostService.createPost(postData);
             response.status(201).json(newPost);
         } catch (error) {
@@ -35,15 +45,31 @@ export class PostController {
             return;
         }
 
+        const query = plainToInstance(PaginationDto, request.query);
+        const errors = await validate(query);
+
+        if (errors.length > 0) {
+            response.status(400).json({ message: 'Validation failed', errors });
+            return;
+        }
+
+        const page = query.page || 1;
+        const limit = query.limit || 12;
+
         try {
-            const posts = await PostService.getAllPostByUser(userId);
+            const { posts, total } = await PostService.getAllPostByUser(userId, page, limit);
 
             if (!posts || posts.length === 0) {
                 response.status(404).json({ message: "No posts found for the user" });
                 return;
             }
 
-            response.status(200).json(posts);
+            response.status(200).json({
+                posts,
+                total,
+                currentPage: page,
+                totalPages: Math.ceil(total / limit),
+            });
         } catch (error) {
             response.status(500).json({ message: "Internal server error" });
         }

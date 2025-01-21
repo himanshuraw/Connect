@@ -1,8 +1,7 @@
-import { error } from "console";
 import { AppDataSource } from "../config/db";
+import { PostDto } from "../dto/PostDto";
 import { Post } from "../models/postgresql/Post";
 import { User } from "../models/postgresql/User";
-import { PostData } from "../types/PostData";
 
 export class PostService {
     private static postRepository = AppDataSource.getRepository(Post);
@@ -22,14 +21,17 @@ export class PostService {
         });
     }
 
-    static async getAllPostByUser(id: number) {
-        const posts = await this.postRepository.find({
+    static async getAllPostByUser(id: number, page: number, limit: number) {
+
+        const [posts, total] = await this.postRepository.findAndCount({
             where: { author: { id } },
             relations: ["author", "comments", "likes"],
             order: { createdAt: "DESC" },
+            skip: (page - 1) * limit,
+            take: limit
         });
 
-        return posts.map(({ author, ...postDetails }) => ({
+        const formattedPosts = posts.map(({ author, ...postDetails }) => ({
             ...postDetails,
             author: {
                 id: author.id,
@@ -39,9 +41,11 @@ export class PostService {
             },
         }));
 
+        return { posts: formattedPosts, total }
+
     }
 
-    static async createPost(data: PostData) {
+    static async createPost(data: PostDto) {
         const { authorId, imageUrl, caption, tags } = data;
 
         const author = await this.userRepository.findOne({
