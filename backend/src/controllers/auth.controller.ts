@@ -3,13 +3,20 @@ import jwt from "jsonwebtoken";
 import { UserService } from "../services/user.service";
 import bcrypt from "bcrypt";
 import { hashPassword } from "../utils/bcrypt";
+import { plainToInstance } from "class-transformer";
+import { LoginDto } from "../dto/LoginDto";
+import { validate } from "class-validator";
+import { RegisterDto } from "../dto/RegisterDto";
 
 export class AuthController {
     static async login(request: Request, response: Response) {
         const { email, username, password } = request.body;
 
-        if ((!username && !email) || !password) {
-            response.status(400).json({ message: "Email/Username and password are required" });
+        const loginDto = plainToInstance(LoginDto, request.body);
+        const errors = await validate(loginDto);
+
+        if (errors.length > 0) {
+            response.status(400).json({ message: "Validation failed", errors });
             return;
         }
 
@@ -59,7 +66,14 @@ export class AuthController {
         401 : Missing valid authentication credentials
     */
     static async register(request: Request, response: Response) {
-        const { email, username, password } = request.body;
+        const registerDto = plainToInstance(RegisterDto, request.body);
+        const errors = await validate(registerDto);
+
+        if (errors.length > 0) {
+            response.status(400).json({ message: "Validation failed", errors });
+            return;
+        }
+        const { email, username, password } = registerDto;
 
         try {
             const existingEmail = await UserService.findUserByEmail(email);

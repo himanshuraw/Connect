@@ -9,6 +9,7 @@ export class CommentController {
             response.status(400).json({ message: "Post Id should be a number" });
             return;
         }
+
         try {
             const comments = await CommentService.getCommentsForPost(postId);
             response.status(200).json(comments);
