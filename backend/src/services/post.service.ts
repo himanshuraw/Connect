@@ -29,14 +29,16 @@ export class PostService {
             order: { createdAt: "DESC" },
         });
 
-        return posts.map(post => {
-            const { author, ...postDetails } = post;
-            const { password, createdAt, updatedAt, ...authorDetails } = author;
-            return {
-                ...postDetails,
-                author: authorDetails
-            }
-        })
+        return posts.map(({ author, ...postDetails }) => ({
+            ...postDetails,
+            author: {
+                id: author.id,
+                email: author.email,
+                username: author.username,
+                profilePictureUrl: author.profilePictureUrl,
+            },
+        }));
+
     }
 
     static async createPost(data: PostData) {

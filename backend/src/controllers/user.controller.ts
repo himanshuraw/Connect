@@ -15,8 +15,8 @@ export class UserController {
     }
 
     static async getUserById(request: Request, response: Response) {
+        const userId = parseInt(request.params.id);
         try {
-            const userId = parseInt(request.params.id);
             const user = await UserService.getUserById(userId);
 
             response.status(200).json(user);
@@ -27,9 +27,9 @@ export class UserController {
 
     //* status code 201 : New resource successfully created
     static async createUser(request: Request, response: Response) {
-        try {
-            const userData = request.body;
+        const userData = request.body;
 
+        try {
             userData.password = await hashPassword(userData.password);
 
             const user = await UserService.createUser(userData);
@@ -40,10 +40,10 @@ export class UserController {
     }
 
     static async updateUser(request: Request, response: Response) {
-        try {
-            const userId = parseInt(request.params.id);
-            const updates = request.body;
+        const userId = parseInt(request.params.id);
+        const updates = request.body;
 
+        try {
             if (updates.password) {
                 updates.password = await hashPassword(updates.password);
             }
@@ -63,8 +63,8 @@ export class UserController {
 
     //* status code 201 : when there is no content to send back (FOR DELETING)
     static async deleteUser(request: Request, response: Response) {
+        const userId = parseInt(request.params.id);
         try {
-            const userId = parseInt(request.params.id);
             const result = await UserService.deleteUser(userId);
 
             if (!result) {
@@ -79,20 +79,20 @@ export class UserController {
     }
 
     static async addProfilePicture(request: Request, response: Response) {
+        const userId = request.user?.userId;
+        const { profilePictureUrl } = request.body;
+
+        if (!profilePictureUrl) {
+            response.status(400).json({ message: " Profile picture URL is required" });
+            return;
+        }
+
+        if (!userId) {
+            response.status(401).json({ message: "Unauthorized" });
+            return;
+        }
+
         try {
-            const userId = request.user?.userId;
-            const { profilePictureUrl } = request.body;
-
-            if (!profilePictureUrl) {
-                response.status(400).json({ message: " Profile picture URL is required" });
-                return;
-            }
-
-            if (!userId) {
-                response.status(401).json({ message: "Unauthorized" });
-                return;
-            }
-
             const updatedUser = await UserService.updateUser(userId, { profilePictureUrl });
 
             if (!updatedUser) {
@@ -107,14 +107,14 @@ export class UserController {
     }
 
     static async togglePrivacy(request: Request, response: Response) {
+        const userId = request.user?.userId;
+
+        if (!userId) {
+            response.status(401).json({ message: "Unauthorized" });
+            return;
+        }
+
         try {
-            const userId = request.user?.userId;
-
-            if (!userId) {
-                response.status(401).json({ message: "Unauthorized" });
-                return;
-            }
-
             const user = await UserService.getUserById(userId);
 
             if (!user) {
