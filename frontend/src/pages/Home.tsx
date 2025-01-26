@@ -2,7 +2,7 @@ import React from 'react'
 
 const Home: React.FC = () => {
     return (
-        <div>Home</div>
+        <div className='text-2xl'>Home</div>
     )
 }
 

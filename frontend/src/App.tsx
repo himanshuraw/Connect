@@ -27,12 +27,14 @@ function App() {
             <Route path="/register" element={<Register />} />
           </Route>
 
-          {/* Authentication Routes */}
+          {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
             <Route element={<Application />}>
               <Route path="/" element={<Home />} />
             </Route>
           </Route>
+
+
         </Routes>
       </BrowserRouter>
     </>

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const BASE_URL = 'http://localhost:3000/';
 
@@ -41,6 +42,7 @@ export const login = createAsyncThunk(
                 : { username: credentials.usernameOrEmail, password: credentials.password };
 
             const response = await axios.post(`${BASE_URL}users/login`, payload);
+
             return response.data;
         } catch (error) {
             return rejectWithValue((error as any).response.data);
@@ -63,9 +65,33 @@ const authSlice = createSlice({
             const token = localStorage.getItem('token');
             const user = localStorage.getItem('user');
 
+
+
             if (token && user) {
-                state.token = token;
-                state.user = JSON.parse(user);
+
+                try {
+                    const decodedToken = jwtDecode(token);
+                    const curTime = Date.now() / 1000;
+
+                    if (decodedToken.exp && decodedToken.exp > curTime) {
+
+                        state.token = token;
+                        state.user = JSON.parse(user);
+                    } else {
+                        state.token = null;
+                        state.user = null;
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
+                        console.log("Token expired");
+
+                    }
+                } catch (error) {
+                    state.token = null;
+                    state.user = null;
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    console.log("Invalid token removed");
+                }
             }
         },
     },
