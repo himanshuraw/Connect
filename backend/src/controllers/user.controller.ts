@@ -1,7 +1,5 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { UserService } from "../services/user.service";
-import bcrypt from "bcrypt";
-import { isBase64 } from "../utils/base64";
 import { hashPassword } from "../utils/bcrypt";
 
 export class UserController {
