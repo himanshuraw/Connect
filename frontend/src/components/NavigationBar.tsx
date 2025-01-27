@@ -1,7 +1,10 @@
 import React from 'react'
+import { BiSearch, BiSolidSearch } from 'react-icons/bi'
 import { GoHome, GoHomeFill } from 'react-icons/go'
-import { IoSearchOutline } from 'react-icons/io5'
 import { MdExplore, MdOutlineExplore } from 'react-icons/md'
+import { Link } from 'react-router'
+import NavigationLink from './NavigationLink'
+import { CgProfile } from 'react-icons/cg'
 
 const NavigationBar: React.FC = () => {
     return (
@@ -16,20 +19,33 @@ const NavigationBar: React.FC = () => {
             md:order-2
             md:h-full md:w-auto
             ">
-            <div>
-                {/* <GoHome className='text-4xl' /> */}
-                <GoHomeFill className='text-4xl' />
-            </div>
+            <NavigationLink
+                to='/'
+                ActiveIcon={GoHomeFill}
+                Icon={GoHome}
+                className='text-4xl'
+            />
 
-            <div>
-                <IoSearchOutline className='text-4xl' />
-            </div>
+            <NavigationLink
+                to='/search'
+                ActiveIcon={BiSolidSearch}
+                Icon={BiSearch}
+                className='text-4xl'
+            />
 
-            <div>
-                <MdOutlineExplore className='text-4xl' />
-                {/* <MdExplore className='text-4xl' /> */}
+            <NavigationLink
+                to='/explore'
+                ActiveIcon={MdExplore}
+                Icon={MdOutlineExplore}
+                className='text-4xl'
+            />
 
-            </div>
+            <NavigationLink
+                to='/profile'
+                ActiveIcon={CgProfile}
+                Icon={CgProfile}
+                className='text-4xl'
+            />
         </div>
     )
 }

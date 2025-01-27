@@ -8,6 +8,9 @@ import Home from "./pages/Home"
 import { useAppDispatch } from "./store/hooks"
 import { useEffect } from "react"
 import { initializeAuth } from "./store/slices/authSlice"
+import Profile from "./pages/Profile"
+import Explore from "./pages/Explore"
+import Search from "./pages/Search"
 
 function App() {
   const dispatch = useAppDispatch();
@@ -31,6 +34,9 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route element={<Application />}>
               <Route path="/" element={<Home />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/explore" element={<Explore />} />
+              <Route path="/search" element={<Search />} />
             </Route>
           </Route>
 
