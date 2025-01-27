@@ -23,6 +23,16 @@ export class UserController {
         }
     }
 
+    static async getUserByUsername(request: Request, response: Response) {
+        const username = request.params.username;
+        try {
+            const user = await UserService.getUserByUsername(username);
+            response.status(200).json(user);
+        } catch (error) {
+            response.status(500).json({ message: (error as Error).message });
+        }
+    }
+
     //* status code 201 : New resource successfully created
     static async createUser(request: Request, response: Response) {
         const userData = request.body;
