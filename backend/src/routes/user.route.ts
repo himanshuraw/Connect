@@ -12,7 +12,8 @@ router.post('/register', AuthController.register);
 router.post('/login', AuthController.login);
 
 router.get('/', UserController.getAllUsers);
-router.get('/:id', UserController.getUserById);
+router.get('/:id(\\d+)', UserController.getUserById);
+router.get('/:username([a-zA-Z0-9_.-]+)', UserController.getUserByUsername);
 router.post('/', UserController.createUser);
 router.put('/:id', UserController.updateUser);
 router.delete('/:id', UserController.deleteUser);
