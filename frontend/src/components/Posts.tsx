@@ -1,6 +1,8 @@
 import React from 'react'
 import useFetchPostsData from '../hooks/useFetchPostsData'
 import { useParams } from 'react-router';
+import Post from './Post';
+import { IPost } from '../types/post';
 
 const Posts: React.FC = () => {
     const { username } = useParams();
@@ -13,19 +15,8 @@ const Posts: React.FC = () => {
 
     return (
         <div className='bg-custom-300'>
-            {postsData?.posts.map((post: any) =>
-                <div key={post.id}>
-                    <div>
-
-                        {post.author.username}
-                    </div>
-                    <div>
-
-                        {post.caption}
-                    </div>
-                    <img src={post.imageUrl} />
-
-                </div>
+            {postsData?.posts.map((post: IPost) =>
+                <Post {...post} key={post.id} />
             )}
         </div>
     )
