@@ -1,21 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { AuthState } from "../../types/user";
 
 const BASE_URL = 'http://localhost:3000/';
-
-interface User {
-    id: number;
-    email: string;
-    username: string;
-}
-
-interface AuthState {
-    token: string | null;
-    user: User | null;
-    loading: boolean;
-    error: string | null;
-}
 
 const loadInitialState = (): AuthState => {
     const token = localStorage.getItem('token');

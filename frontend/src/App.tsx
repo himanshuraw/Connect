@@ -37,8 +37,10 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/explore" element={<Explore />} />
               <Route path="/search" element={<Search />} />
+              <Route path="/:username" element={<Profile />} />
             </Route>
           </Route>
+
 
 
         </Routes>

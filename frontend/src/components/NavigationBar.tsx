@@ -2,7 +2,6 @@ import React from 'react'
 import { BiSearch, BiSolidSearch } from 'react-icons/bi'
 import { GoHome, GoHomeFill } from 'react-icons/go'
 import { MdExplore, MdOutlineExplore } from 'react-icons/md'
-import { Link } from 'react-router'
 import NavigationLink from './NavigationLink'
 import { CgProfile } from 'react-icons/cg'
 
@@ -11,7 +10,7 @@ const NavigationBar: React.FC = () => {
         <div
             className="
             flex flex-col
-            bg-background-100
+            bg-dark-charcoal
             rounded-md
             w-full
             p-3

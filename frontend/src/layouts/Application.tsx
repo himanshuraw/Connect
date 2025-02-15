@@ -5,8 +5,13 @@ import NavigationBar from "../components/NavigationBar";
 const Application: React.FC = () => {
     return (
         <>
-            <div className='flex flex-col md:flex-row h-screen w-screen p-2'>
-                <div className="flex-1 overflow-y-auto">
+            <div
+                className='
+                h-screen w-screen p-2
+                flex flex-col 
+                md:flex-row'
+            >
+                <div className="flex-1 flex flex-col overflow-hidden">
                     <Outlet />
                 </div>
                 <NavigationBar />
