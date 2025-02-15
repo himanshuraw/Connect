@@ -1,22 +1,32 @@
 @import "tailwindcss";
 
 @theme {
-    --color-primary: rgba(255, 210, 125, 1);
-    --color-background-900: rgba(18, 20, 22, 1);
-    --color-background-100: rgba(31, 33, 37, 1);
-
-    --color-customGray-100: rgb(247, 250, 252);
-    --color-customGray-200: rgb(237, 242, 247);
-    --color-customGray-300: rgb(226, 232, 240);
-    --color-customGray-400: rgb(203, 213, 224);
-    --color-customGray-500: rgb(160, 174, 192);
-    --color-customGray-600: rgb(113, 128, 150);
-    --color-customGray-700: rgb(74, 85, 104);
-    --color-customGray-800: rgb(45, 55, 72);
-    --color-customGray-900: rgb(26, 32, 44);
+    --color-primary: #ffd27d;
+    --color-dark: #121416;
+    --color-dark-charcoal: #1f2226;
+    --color-deep-slate: #2c2f34;
+    --color-graphite-gray: #393d42;
+    --color-steel-shadow: #464a51;
+    --color-ash-gray: #545860;
+    --color-clouded-silver: #626770;
+    --color-soft-smoke: #707581;
+    --color-pale-pewter: #7e8492;
+    --color-cool-mist: #8d92a3;
+    --color-frosted-silver: #9ba1b4;
+    --color-light: #e4e8ed;
 }
 
 body {
-    color: var(--color-white);
-    background-color: var(--color-background-900);
+    color: var(--color-light);
+    background-color: var(--color-dark);
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary);
+    border-radius: 5px;
+
 }
