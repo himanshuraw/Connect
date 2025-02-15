@@ -2,6 +2,8 @@ export interface UserData {
     id: number;
     username: string;
     profilePictureUrl: string | null;
+    firstName: string;
+    lastname: string;
     isPrivate: boolean;
     about: string | null;
     postCount: number;

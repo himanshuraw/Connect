@@ -18,6 +18,12 @@ export class User {
     @Column()
     password: string;
 
+    @Column()
+    firstname: string;
+
+    @Column({ nullable: true })
+    lastname: string;
+
     @Column({ type: "text", nullable: true })
     profilePictureUrl: string;
 

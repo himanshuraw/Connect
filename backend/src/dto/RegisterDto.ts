@@ -11,4 +11,10 @@ export class RegisterDto {
     @IsString()
     @MinLength(6, { message: 'Password is too short. It should be at least 6 characters long.' })
     password: string;
+
+    @IsString()
+    firstname: string;
+
+    @IsString()
+    lastname: string;
 }

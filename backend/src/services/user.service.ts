@@ -30,6 +30,8 @@ export class UserService {
                 "user.about",
                 "user.createdAt",
                 "user.updatedAt",
+                "user.firstname",
+                "user.lastname",
             ])
             .addSelect((subQuery) => {
                 return subQuery
@@ -64,6 +66,8 @@ export class UserService {
             about: user.user_about,
             createdAt: user.user_createdAt,
             updatedAt: user.user_updatedAt,
+            firstname: user.user_firstname,
+            lastname: user.user_lastname,
             postCount: parseInt(user.postCount, 10),
             followerCount: parseInt(user.followerCount, 10),
             followingCount: parseInt(user.followingCount, 10),

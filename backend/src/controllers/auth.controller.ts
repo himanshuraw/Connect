@@ -73,7 +73,7 @@ export class AuthController {
             response.status(400).json({ message: "Validation failed", errors });
             return;
         }
-        const { email, username, password } = registerDto;
+        const { email, username, password, firstname, lastname } = registerDto;
 
         try {
             const existingEmail = await UserService.findUserByEmail(email);
@@ -90,7 +90,7 @@ export class AuthController {
 
             const hashedPassword = await hashPassword(password);
 
-            const user = await UserService.createUser({ email, username, password: hashedPassword });
+            const user = await UserService.createUser({ email, username, password: hashedPassword, firstname, lastname });
 
             response.status(201).json({
                 message: "User registered successfully",
