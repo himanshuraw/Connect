@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
-import { PostProp } from "../types/post";
+import { IPosts } from "../types/post";
 
 const useFetchPostsData = (username: string) => {
     const BASE_URL = import.meta.env.VITE_BASE_URL
-    const [postsData, setPostsData] = useState<PostProp[] | null>({});
+    const [postsData, setPostsData] = useState<IPosts | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
