@@ -22,9 +22,6 @@ export class UserService {
     static async getUserByUsername(username: string) {
         const user = await this.userRepository
             .createQueryBuilder("user")
-            .leftJoinAndSelect("user.posts", "posts")
-            .leftJoinAndSelect("user.followers", "followers")
-            .leftJoinAndSelect("user.following", "following")
             .select([
                 "user.id",
                 "user.username",
@@ -33,19 +30,32 @@ export class UserService {
                 "user.about",
                 "user.createdAt",
                 "user.updatedAt",
-                "COUNT(posts.id) AS postCount",
-                "COUNT(followers.id) AS followerCount",
-                "COUNT(following.id) AS followingCount",
             ])
+            .addSelect((subQuery) => {
+                return subQuery
+                    .select("COUNT(posts.id)", "postCount")
+                    .from("posts", "posts")
+                    .where("posts.authorId = user.id");
+            }, "postCount")
+            .addSelect((subQuery) => {
+                return subQuery
+                    .select("COUNT(follows.id)", "followerCount")
+                    .from("follows", "follows")
+                    .where("follows.followingId = user.id");
+            }, "followerCount")
+            .addSelect((subQuery) => {
+                return subQuery
+                    .select("COUNT(follows.id)", "followingCount")
+                    .from("follows", "follows")
+                    .where("follows.followerId = user.id");
+            }, "followingCount")
             .where("user.username = :username", { username })
-            .groupBy("user.id")
             .getRawOne();
 
         if (!user) {
             throw new Error("User not found");
         }
 
-        // Transform the raw result into a more user-friendly format
         return {
             id: user.user_id,
             username: user.user_username,
@@ -59,6 +69,8 @@ export class UserService {
             followingCount: parseInt(user.followingCount, 10),
         };
     }
+
+
 
     static async createUser(userData: Partial<User>) {
         const user = this.userRepository.create(userData);
