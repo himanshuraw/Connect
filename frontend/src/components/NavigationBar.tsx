@@ -4,17 +4,23 @@ import { GoHome, GoHomeFill } from 'react-icons/go'
 import { MdExplore, MdOutlineExplore } from 'react-icons/md'
 import NavigationLink from './NavigationLink'
 import { CgProfile } from 'react-icons/cg'
+import { useSelector } from 'react-redux'
+import { RootState } from '../store/store'
 
 const NavigationBar: React.FC = () => {
+    const username = useSelector((state: RootState) => state.auth.user?.username);
     return (
         <div
             className="
-            flex flex-col
+            flex 
             bg-dark-charcoal
             rounded-md
             w-full
             p-3
             gap-5
+            justify-evenly
+            md:justify-start
+            md:flex-col
             md:order-2
             md:h-full md:w-auto
             ">
@@ -40,7 +46,7 @@ const NavigationBar: React.FC = () => {
             />
 
             <NavigationLink
-                to='/profile'
+                to={`/${username}`}
                 ActiveIcon={CgProfile}
                 Icon={CgProfile}
                 className='text-4xl'
