@@ -1,8 +1,8 @@
 export interface UserData {
     id: number;
     username: string;
-    profilePictureUrl: string | null;
-    firstName: string;
+    profilePictureUrl?: string;
+    firstname: string;
     lastname: string;
     isPrivate: boolean;
     about: string | null;

@@ -1,7 +1,3 @@
-export interface ProfilePictureProps {
-    url: string | null;
-}
-
 type IconType = React.FC<React.SVGProps<SVGSVGElement>>;
 
 export interface NavigationLinkProps {
@@ -9,4 +5,15 @@ export interface NavigationLinkProps {
     Icon: IconType;
     ActiveIcon: IconType;
     className?: string;
+}
+
+export interface CounterProps {
+    title: string;
+    value: number;
+}
+
+
+export interface ImageProps {
+    url?: string;
+    alt?: string;
 }
