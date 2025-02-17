@@ -14,14 +14,15 @@ export class FeedService {
         })
 
         const followingIds = followings.map(follow => follow.following.id)
-        // I think it should be just follow.id 
 
         followingIds.push(userId);
 
-        return this.postRepository.find({
+        const posts = await this.postRepository.find({
             where: { author: { id: In(followingIds) } },
             relations: ["author", "likes", "comments"],
             order: { createdAt: 'DESC' },
         });
+
+        return posts
     }
 }
