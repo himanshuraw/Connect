@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { LikeService } from "../services/like.service";
+import { Message } from "../utils/messages";
 
 export class LikeController {
     static async toggleLikePost(request: Request, response: Response) {
@@ -15,7 +16,7 @@ export class LikeController {
             const result = await LikeService.toggleLikePost(userId, postId);
             response.status(200).json(result);
         } catch (error) {
-            response.status(500).json({ message: (error as Error).message });
+            response.status(500).json(Message.sendError(error));
         }
     }
 
@@ -31,7 +32,7 @@ export class LikeController {
             const likes = await LikeService.getLikesForPost(postId);
             response.status(200).json({ likes });
         } catch (error) {
-            response.status(500).json({ message: (error as Error).message });
+            response.status(500).json(Message.sendError(error));
         }
     }
 }

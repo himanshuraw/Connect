@@ -3,6 +3,7 @@ import { CommentService } from "../services/comment.service";
 import { plainToInstance } from "class-transformer";
 import { CommentDto } from "../dto/CommentDto";
 import { validate } from "class-validator";
+import { Message } from "../utils/messages";
 
 export class CommentController {
     static async getCommentsForPost(request: Request, response: Response) {
@@ -17,7 +18,7 @@ export class CommentController {
             const comments = await CommentService.getCommentsForPost(postId);
             response.status(200).json(comments);
         } catch (error) {
-            response.status(500).json({ message: (error as Error).message });
+            response.status(500).json(Message.sendError(error));
         }
     }
 
@@ -31,7 +32,7 @@ export class CommentController {
 
         const userId = request.user?.userId;
         if (!userId) {
-            response.status(401).json({ message: "Unauthorized user" });
+            response.status(401).json(Message.unauthorized);
             return;
         }
 
@@ -47,7 +48,7 @@ export class CommentController {
             const comment = await CommentService.createCommentForPost(postId, userId, commentDto);
             response.status(201).json(comment);
         } catch (error) {
-            response.status(500).json({ message: (error as Error).message });
+            response.status(500).json(Message.sendError(error));
         }
     }
 
@@ -61,7 +62,7 @@ export class CommentController {
 
         const userId = request.user?.userId;
         if (!userId) {
-            response.status(401).json({ message: `Unauthorized user` });
+            response.status(401).json(Message.unauthorized);
             return;
         }
 

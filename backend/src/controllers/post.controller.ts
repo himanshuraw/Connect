@@ -4,6 +4,7 @@ import { plainToInstance } from "class-transformer";
 import { PaginationDto } from "../dto/PaginationDto";
 import { validate } from "class-validator";
 import { PostDto } from "../dto/PostDto";
+import { Message } from "../utils/messages";
 
 export class PostController {
     static async createPost(request: Request, response: Response) {
@@ -125,7 +126,7 @@ export class PostController {
         try {
             const userId = request.user?.userId;
             if (!userId) {
-                response.status(401).json({ message: "Unauthorized" });
+                response.status(401).json(Message.unauthorized);
                 return;
             }
 

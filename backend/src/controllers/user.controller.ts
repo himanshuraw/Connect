@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/user.service";
 import { hashPassword } from "../utils/bcrypt";
+import { Message } from "../utils/messages";
 
 export class UserController {
     static async getAllUsers(request: Request, response: Response) {
@@ -8,7 +9,7 @@ export class UserController {
             const users = await UserService.getAllUsers();
             response.status(200).json(users);
         } catch (error) {
-            response.status(500).json({ message: (error as Error).message });
+            response.status(500).json(Message.sendError(error));
         }
     }
 
@@ -19,7 +20,7 @@ export class UserController {
 
             response.status(200).json(user);
         } catch (error) {
-            response.status(500).json({ message: (error as Error).message })
+            response.status(500).json(Message.sendError(error))
         }
     }
 
@@ -29,7 +30,7 @@ export class UserController {
             const user = await UserService.getUserByUsername(username);
             response.status(200).json(user);
         } catch (error) {
-            response.status(500).json({ message: (error as Error).message });
+            response.status(500).json(Message.sendError(error));
         }
     }
 
@@ -43,7 +44,7 @@ export class UserController {
             const user = await UserService.createUser(userData);
             response.status(201).json(user);
         } catch (error) {
-            response.status(500).json({ message: (error as Error).message });
+            response.status(500).json(Message.sendError(error));
         }
     }
 
@@ -65,7 +66,7 @@ export class UserController {
 
             response.status(200).json(updatedUser);
         } catch (error) {
-            response.status(500).json({ message: (error as Error).message });
+            response.status(500).json(Message.sendError(error));
         }
     }
 
@@ -82,7 +83,7 @@ export class UserController {
 
             response.status(204).send();
         } catch (error) {
-            response.status(500).json({ message: (error as Error).message });
+            response.status(500).json(Message.sendError(error));
         }
     }
 
@@ -96,7 +97,7 @@ export class UserController {
         }
 
         if (!userId) {
-            response.status(401).json({ message: "Unauthorized" });
+            response.status(401).json(Message.unauthorized);
             return;
         }
 
@@ -118,7 +119,7 @@ export class UserController {
         const userId = request.user?.userId;
 
         if (!userId) {
-            response.status(401).json({ message: "Unauthorized" });
+            response.status(401).json(Message.unauthorized);
             return;
         }
 
@@ -134,7 +135,7 @@ export class UserController {
 
             response.status(200).json({ message: `Privacy updated to ${updatedUser.isPrivate ? "private" : "public"}` })
         } catch (error) {
-            response.status(400).json({ message: (error as Error).message });
+            response.status(400).json(Message.sendError(error));
         }
     }
 }

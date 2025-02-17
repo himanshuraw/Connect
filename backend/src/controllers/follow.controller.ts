@@ -1,5 +1,6 @@
 import { Request, response, Response } from "express";
 import { FollowService } from "../services/follow.service";
+import { Message } from "../utils/messages";
 
 export class FollowController {
     static async handleFollowAction(request: Request, response: Response) {
@@ -21,7 +22,7 @@ export class FollowController {
             response.status(201).json(result);
         } catch (error) {
             console.log(error);
-            response.status(400).json({ message: (error as Error).message });
+            response.status(400).json(Message.sendError(error));
         }
     }
 
@@ -39,7 +40,7 @@ export class FollowController {
             const result = await FollowService.processFollowRequest(followRequestId, userId, action);
             response.status(200).json(result);
         } catch (error) {
-            response.status(400).json({ message: (error as Error).message });
+            response.status(400).json(Message.sendError(error));
         }
     }
 
@@ -47,7 +48,7 @@ export class FollowController {
         const userId = request.user?.userId;
 
         if (!userId) {
-            response.status(401).json({ message: "Unauthorized" });
+            response.status(401).json(Message.unauthorized);
             return;
         }
 
@@ -55,7 +56,7 @@ export class FollowController {
             const pendingRequests = await FollowService.getPendingRequests(userId);
             response.status(200).json(pendingRequests);
         } catch (error) {
-            response.status(500).json({ message: (error as Error).message });
+            response.status(500).json(Message.sendError(error));
         }
     }
 
@@ -72,7 +73,7 @@ export class FollowController {
             const followers = await FollowService.getFollowers(userId);
             response.status(200).json({ followers });
         } catch (error) {
-            response.status(500).json({ message: (error as Error).message })
+            response.status(500).json(Message.sendError(error))
         }
     }
 
@@ -89,7 +90,7 @@ export class FollowController {
             const followings = await FollowService.getFollowing(userId);
             response.status(200).json({ followings });
         } catch (error) {
-            response.status(500).json({ message: (error as Error).message })
+            response.status(500).json(Message.sendError(error))
         }
     }
 }
