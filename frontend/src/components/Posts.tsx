@@ -14,7 +14,7 @@ const Posts: React.FC = () => {
     }
 
     return (
-        <div className='xl:mx-20 2xl:mx-28 p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2'>
+        <div className='xl:mx-20 2xl:mx-28 px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2'>
             {postsData?.posts.map((post: IPost) =>
                 <PostCard {...post} key={post.id} />
             )}
