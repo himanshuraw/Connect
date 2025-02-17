@@ -1,12 +1,12 @@
 import React from 'react'
-import useFetchPostsData from '../hooks/useFetchPostsData'
 import { useParams } from 'react-router';
-import { IPost } from '../types/post';
+import { IPost, IPosts } from '../types/post';
 import PostCard from './PostCard';
+import useFetchData from '../hooks/UseFetchData';
 
 const Posts: React.FC = () => {
     const { username } = useParams();
-    const { postsData, loading, error } = useFetchPostsData(username || "");
+    const { data: postsData, loading, error } = useFetchData<IPosts>(`/posts/${username}`, false)
 
     if (loading) { return (<>loading</>) }
     if (error) {

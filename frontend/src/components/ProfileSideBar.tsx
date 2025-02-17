@@ -1,14 +1,15 @@
 import React from 'react'
 import ProfilePicture from './ProfilePicture'
-import useFetcUserData from '../hooks/useFetchUserData';
 import { useParams } from 'react-router';
 import Counter from './Counter';
+import useFetchData from '../hooks/UseFetchData';
+import { UserData } from '../types/user';
 
 const ProfileSideBar: React.FC = () => {
 
     const { username } = useParams();
 
-    const { userData, loading, error } = useFetcUserData(username || '')
+    const { data: userData, loading, error } = useFetchData<UserData>(`/users/${username}`, true)
 
     if (loading) {
         return <div>Loading...</div>;
